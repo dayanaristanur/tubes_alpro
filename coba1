@@ -1,0 +1,297 @@
+package main
+
+import "fmt"
+
+const MAX = 100
+
+// =====================================
+// STRUCT KANDIDAT
+// =====================================
+
+type Kandidat struct {
+	Nomor int
+	Nama  string
+	Visi  string
+	Misi  string
+	Suara int
+}
+
+// ARRAY DATA
+var data [MAX]Kandidat
+
+// JUMLAH DATA
+var jumlah int
+
+// =====================================
+// 1. TAMBAH KANDIDAT
+// =====================================
+
+func tambahKandidat() {
+
+	fmt.Println("\n=== Tambah Kandidat Ketua OSIS ===")
+
+	fmt.Print("Nomor Urut : ")
+	fmt.Scan(&data[jumlah].Nomor)
+
+	fmt.Print("Nama Kandidat : ")
+	fmt.Scan(&data[jumlah].Nama)
+
+	fmt.Print("Visi : ")
+	fmt.Scan(&data[jumlah].Visi)
+
+	fmt.Print("Misi : ")
+	fmt.Scan(&data[jumlah].Misi)
+
+	data[jumlah].Suara = 0
+
+	jumlah++
+
+	fmt.Println("Kandidat berhasil ditambahkan")
+}
+
+// =====================================
+// 2. TAMPILKAN KANDIDAT
+// =====================================
+
+func tampilKandidat() {
+
+	var i int
+
+	fmt.Println("\n=== Data Kandidat Ketua OSIS ===")
+
+	if jumlah == 0 {
+
+		fmt.Println("Belum ada data")
+	}
+
+	for i = 0; i < jumlah; i++ {
+
+		fmt.Println("Nomor :", data[i].Nomor)
+		fmt.Println("Nama  :", data[i].Nama)
+		fmt.Println("Visi  :", data[i].Visi)
+		fmt.Println("Misi  :", data[i].Misi)
+		fmt.Println("Suara :", data[i].Suara)
+
+		fmt.Println("----------------------")
+	}
+}
+
+// =====================================
+// SEQUENTIAL SEARCH
+// Dipakai saat voting
+// =====================================
+
+func sequentialSearch(no int) int {
+
+	var i int
+
+	for i = 0; i < jumlah; i++ {
+
+		if data[i].Nomor == no {
+
+			return i
+		}
+	}
+
+	return -1
+}
+
+// =====================================
+// 3. VOTING
+// =====================================
+
+func voting() {
+
+	var no int
+	var index int
+
+	fmt.Println("\n=== Voting Ketua OSIS ===")
+
+	fmt.Print("Masukkan nomor kandidat : ")
+	fmt.Scan(&no)
+
+	// memakai sequential search
+	index = sequentialSearch(no)
+
+	if index != -1 {
+
+		data[index].Suara++
+
+		fmt.Println("Voting berhasil")
+
+	} else {
+
+		fmt.Println("Kandidat tidak ditemukan")
+	}
+}
+
+// =====================================
+// INSERTION SORT
+// Mengurutkan berdasarkan nomor urut
+// =====================================
+
+func insertionSort() {
+
+	var i, j int
+	var temp Kandidat
+
+	for i = 1; i < jumlah; i++ {
+
+		temp = data[i]
+
+		j = i - 1
+
+		for j >= 0 && data[j].Nomor > temp.Nomor {
+
+			data[j+1] = data[j]
+
+			j--
+		}
+
+		data[j+1] = temp
+	}
+}
+
+// =====================================
+// BINARY SEARCH
+// Tetap ada untuk memenuhi tugas
+// =====================================
+
+func binarySearch(no int) int {
+
+	var kiri, kanan, tengah int
+
+	insertionSort()
+
+	kiri = 0
+	kanan = jumlah - 1
+
+	for kiri <= kanan {
+
+		tengah = (kiri + kanan) / 2
+
+		if data[tengah].Nomor == no {
+
+			return tengah
+
+		} else if no < data[tengah].Nomor {
+
+			kanan = tengah - 1
+
+		} else {
+
+			kiri = tengah + 1
+		}
+	}
+
+	return -1
+}
+
+// =====================================
+// SELECTION SORT
+// Mengurutkan suara terbanyak
+// =====================================
+
+func selectionSort() {
+
+	var i, j, max int
+	var temp Kandidat
+
+	for i = 0; i < jumlah-1; i++ {
+
+		max = i
+
+		for j = i + 1; j < jumlah; j++ {
+
+			if data[j].Suara > data[max].Suara {
+
+				max = j
+			}
+		}
+
+		temp = data[i]
+		data[i] = data[max]
+		data[max] = temp
+	}
+}
+
+// =====================================
+// 4. TOTAL SUARA
+// =====================================
+
+func totalSuara() {
+
+	var i int
+	var total int
+
+	// memakai selection sort
+	selectionSort()
+
+	fmt.Println("\n=== Total Suara Kandidat ===")
+
+	total = 0
+
+	for i = 0; i < jumlah; i++ {
+
+		fmt.Println("Nama  :", data[i].Nama)
+		fmt.Println("Suara :", data[i].Suara)
+
+		fmt.Println("----------------------")
+
+		total = total + data[i].Suara
+	}
+
+	fmt.Println("Total seluruh suara :", total)
+}
+
+// =====================================
+// MAIN PROGRAM
+// =====================================
+
+func main() {
+
+	var pilih int
+
+	for pilih != 5 {
+
+		fmt.Println("\n===== APLIKASI E-VOTING OSIS =====")
+		fmt.Println("1. Tambah Kandidat")
+		fmt.Println("2. Tampilkan Kandidat")
+		fmt.Println("3. Voting")
+		fmt.Println("4. Total Suara")
+		fmt.Println("5. Keluar")
+
+		fmt.Print("Pilih menu : ")
+		fmt.Scan(&pilih)
+
+		// MENU TAMBAH
+		if pilih == 1 {
+
+			tambahKandidat()
+
+			// MENU TAMPILKAN
+		} else if pilih == 2 {
+
+			tampilKandidat()
+
+			// MENU VOTING
+		} else if pilih == 3 {
+
+			voting()
+
+			// MENU TOTAL SUARA
+		} else if pilih == 4 {
+
+			totalSuara()
+
+			// MENU KELUAR
+		} else if pilih == 5 {
+
+			fmt.Println("Program selesai")
+
+		} else {
+
+			fmt.Println("Menu tidak tersedia")
+		}
+	}
+}
