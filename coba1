@@ -18,7 +18,7 @@ var jumlah int
 
 func tambahKandidat() {
 
-	fmt.Println("\n=== Tambah Kandidat Ketua OSIS ===")
+	fmt.Println("\n Tambah Kandidat Ketua OSIS")
 
 	fmt.Print("Nomor Urut : ")
 	fmt.Scan(&data[jumlah].Nomor)
@@ -43,7 +43,7 @@ func tampilKandidat() {
 
 	var i int
 
-	fmt.Println("\n=== Data Kandidat Ketua OSIS ===")
+	fmt.Println("\n Data Kandidat Ketua OSIS ")
 
 	if jumlah == 0 {
 
@@ -58,7 +58,6 @@ func tampilKandidat() {
 		fmt.Println("Misi  :", data[i].Misi)
 		fmt.Println("Suara :", data[i].Suara)
 
-		fmt.Println("----------------------")
 	}
 }
 
@@ -82,7 +81,7 @@ func voting() {
 	var no int
 	var index int
 
-	fmt.Println("\n=== Voting Ketua OSIS ===")
+	fmt.Println("\n Voting Ketua OSIS ")
 
 	fmt.Print("Masukkan nomor kandidat : ")
 	fmt.Scan(&no)
@@ -97,9 +96,10 @@ func voting() {
 
 	} else {
 
-		fmt.Println("Kandidat tidak ditemukan")
+		fmt.Println("Kandidat tidak ada")
 	}
 }
+
 func insertionSort() {
 
 	var i, j int
@@ -174,15 +174,15 @@ func selectionSort() {
 		data[max] = temp
 	}
 }
+
 func totalSuara() {
 
 	var i int
 	var total int
 
-	// memakai selection sort
 	selectionSort()
 
-	fmt.Println("\n=== Total Suara Kandidat ===")
+	fmt.Println("\n Total Suara Kandidat")
 
 	total = 0
 
@@ -191,20 +191,19 @@ func totalSuara() {
 		fmt.Println("Nama  :", data[i].Nama)
 		fmt.Println("Suara :", data[i].Suara)
 
-		fmt.Println("----------------------")
-
 		total = total + data[i].Suara
 	}
 
 	fmt.Println("Total seluruh suara :", total)
 }
+
 func main() {
 
 	var pilih int
 
 	for pilih != 5 {
 
-		fmt.Println("\n===== APLIKASI E-VOTING OSIS =====")
+		fmt.Println(" \n APLIKASI E-VOTING OSIS ")
 		fmt.Println("1. Tambah Kandidat")
 		fmt.Println("2. Tampilkan Kandidat")
 		fmt.Println("3. Voting")
