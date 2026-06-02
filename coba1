@@ -2,240 +2,82 @@ package main
 
 import "fmt"
 
-const MAX = 100
+const NMAX = 100
 
 type Kandidat struct {
-	Nomor int
-	Nama  string
-	Visi  string
-	Misi  string
-	Suara int
+	Nama string
 }
 
-var data [MAX]Kandidat
-
-var jumlah int
+var data [NMAX]Kandidat
+var n int
 
 func tambahKandidat() {
+	var nama string
 
-	fmt.Println("\n Tambah Kandidat Ketua OSIS")
+	fmt.Print("Nama Kandidat: ")
+	fmt.Scan(&nama)
 
-	fmt.Print("Nomor Urut : ")
-	fmt.Scan(&data[jumlah].Nomor)
-
-	fmt.Print("Nama Kandidat : ")
-	fmt.Scan(&data[jumlah].Nama)
-
-	fmt.Print("Visi : ")
-	fmt.Scan(&data[jumlah].Visi)
-
-	fmt.Print("Misi : ")
-	fmt.Scan(&data[jumlah].Misi)
-
-	data[jumlah].Suara = 0
-
-	jumlah++
+	data[n].Nama = nama
+	n++
 
 	fmt.Println("Kandidat berhasil ditambahkan")
 }
 
 func tampilKandidat() {
-
-	var i int
-
-	fmt.Println("\n Data Kandidat Ketua OSIS ")
-
-	if jumlah == 0 {
-
-		fmt.Println("Belum ada data")
+	if n == 0 {
+		fmt.Println("Belum ada kandidat")
+		return
 	}
 
-	for i = 0; i < jumlah; i++ {
-
-		fmt.Println("Nomor :", data[i].Nomor)
-		fmt.Println("Nama  :", data[i].Nama)
-		fmt.Println("Visi  :", data[i].Visi)
-		fmt.Println("Misi  :", data[i].Misi)
-		fmt.Println("Suara :", data[i].Suara)
-
+	fmt.Println("\nDaftar Kandidat:")
+	for i := 0; i < n; i++ {
+		fmt.Printf("%d. %s\n", i+1, data[i].Nama)
 	}
 }
 
-func sequentialSearch(no int) int {
+func cariKandidat() {
+	var nama string
+	var ditemukan bool
 
-	var i int
+	fmt.Print("Masukkan nama kandidat: ")
+	fmt.Scan(&nama)
 
-	for i = 0; i < jumlah; i++ {
-
-		if data[i].Nomor == no {
-
-			return i
+	for i := 0; i < n; i++ {
+		if data[i].Nama == nama {
+			fmt.Println("Kandidat ditemukan pada indeks", i)
+			ditemukan = true
 		}
 	}
 
-	return -1
-}
-
-func voting() {
-
-	var no int
-	var index int
-
-	fmt.Println("\n Voting Ketua OSIS ")
-
-	fmt.Print("Masukkan nomor kandidat : ")
-	fmt.Scan(&no)
-
-	index = sequentialSearch(no)
-
-	if index != -1 {
-
-		data[index].Suara++
-
-		fmt.Println("Voting berhasil")
-
-	} else {
-
-		fmt.Println("Kandidat tidak ada")
+	if !ditemukan {
+		fmt.Println("Kandidat tidak ditemukan")
 	}
-}
-
-func insertionSort() {
-
-	var i, j int
-	var temp Kandidat
-
-	for i = 1; i < jumlah; i++ {
-
-		temp = data[i]
-
-		j = i - 1
-
-		for j >= 0 && data[j].Nomor > temp.Nomor {
-
-			data[j+1] = data[j]
-
-			j--
-		}
-
-		data[j+1] = temp
-	}
-}
-
-func binarySearch(no int) int {
-
-	var kiri, kanan, tengah int
-
-	insertionSort()
-
-	kiri = 0
-	kanan = jumlah - 1
-
-	for kiri <= kanan {
-
-		tengah = (kiri + kanan) / 2
-
-		if data[tengah].Nomor == no {
-
-			return tengah
-
-		} else if no < data[tengah].Nomor {
-
-			kanan = tengah - 1
-
-		} else {
-
-			kiri = tengah + 1
-		}
-	}
-
-	return -1
-}
-
-func selectionSort() {
-
-	var i, j, max int
-	var temp Kandidat
-
-	for i = 0; i < jumlah-1; i++ {
-
-		max = i
-
-		for j = i + 1; j < jumlah; j++ {
-
-			if data[j].Suara > data[max].Suara {
-
-				max = j
-			}
-		}
-
-		temp = data[i]
-		data[i] = data[max]
-		data[max] = temp
-	}
-}
-
-func totalSuara() {
-
-	var i int
-	var total int
-
-	selectionSort()
-
-	fmt.Println("\n Total Suara Kandidat")
-
-	total = 0
-
-	for i = 0; i < jumlah; i++ {
-
-		fmt.Println("Nama  :", data[i].Nama)
-		fmt.Println("Suara :", data[i].Suara)
-
-		total = total + data[i].Suara
-	}
-
-	fmt.Println("Total seluruh suara :", total)
 }
 
 func main() {
+	var pilihan int
 
-	var pilih int
-
-	for pilih != 5 {
-
-		fmt.Println(" \n APLIKASI E-VOTING OSIS ")
+	for {
+		fmt.Println("\n=== APLIKASI VOTING ===")
 		fmt.Println("1. Tambah Kandidat")
 		fmt.Println("2. Tampilkan Kandidat")
-		fmt.Println("3. Voting")
-		fmt.Println("4. Total Suara")
-		fmt.Println("5. Keluar")
+		fmt.Println("3. Cari Kandidat")
+		fmt.Println("4. Keluar")
+		fmt.Print("Pilih menu: ")
+		fmt.Scan(&pilihan)
 
-		fmt.Print("Pilih menu : ")
-		fmt.Scan(&pilih)
-
-		if pilih == 1 {
-
+		switch pilihan {
+		case 1:
 			tambahKandidat()
-
-		} else if pilih == 2 {
-
+		case 2:
 			tampilKandidat()
-
-		} else if pilih == 3 {
-
-			voting()
-
-		} else if pilih == 4 {
-
-			totalSuara()
-
-		} else if pilih == 5 {
-
+		case 3:
+			cariKandidat()
+		case 4:
 			fmt.Println("Program selesai")
-
-		} else {
-
-			fmt.Println("Menu tidak tersedia")
+			return
+		default:
+			fmt.Println("Pilihan tidak valid")
 		}
 	}
 }
